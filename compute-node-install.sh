@@ -46,7 +46,8 @@ EOF
 
 
 yum -y remove openvswitch
-yum -y install midolman
+yum -y install midolman openstack-nova-network
+systemctl disable openstack-nova-network.service
 
 cat << EOF > /etc/midolman/midolman.conf
 [zookeeper]
