@@ -7,6 +7,7 @@ cd /nfs/user/volumes
 for i in {1..200}; do
   mkdir s"$i"
 done
+chmod -R 777 /nfs/user/volumes
 echo '/nfs/users/volumes *(rw,sync,root_squash,no_subtree_check)' >> /etc/exports
 exportfs -arv
 systemctl reload nfs-server
