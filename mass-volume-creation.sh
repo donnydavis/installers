@@ -1,3 +1,24 @@
+############################
+#Do this on the NFS Server##
+# cd to your export dir   ##
+############################
+mkdir -p /nfs/user/volumes
+cd /nfs/user/volumes
+for i in {1..200}; do
+  mkdir s"$i"
+done
+echo '/nfs/users/volumes *(rw,sync,root_squash,no_subtree_check)' >> /etc/exports
+exportfs -arv
+systemctl reload nfs-server
+
+##################################
+#Do this on the Openshift Master##
+# cd to your export dir         ##
+##################################
+cd ~
+mkdir uservol
+cd uservol
+
 for i in {1..200}; do
 cat <<EOF >> pv-user-s$i.yaml
 apiVersion: v1
@@ -14,4 +35,8 @@ spec:
     server: INSERTIPADDRESS
   persistentVolumeReclaimPolicy: Recycle
 EOF
+done
+
+for i in {1..200}; do
+oc create -f pv-user-s$i.yaml
 done
